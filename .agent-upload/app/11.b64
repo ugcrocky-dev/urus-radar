@@ -1,0 +1,32 @@
+      <div className="chips">
+                {allMarkets.map((m) => (
+                  <span
+                    key={m}
+                    className="chip active"
+                    style={{ cursor: "default" }}
+                  >
+                    {marketMeta[m].flag}: {marketMeta[m].importNote}
+                  </span>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {compared.length > 0 && (
+            <section className="panel compare">
+              <h3>Compare desk</h3>
+              <p>Local ask vs estimated US landed cost for selected cars.</p>
+              <table className="compare-table">
+                <thead>
+                  <tr>
+                    <th>Car</th>
+                    <th>Market ask</th>
+                    <th>Est. US landed</th>
+                    <th>vs cheapest US in view</th>
+                    <th>Live</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {compared.map((l) => {
+                    const landed = estimateUsLanded(l);
+                    const usCandidates = listings
