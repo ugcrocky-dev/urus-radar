@@ -1,0 +1,74 @@
+refresh-error">Load failed: {loadError}</p>
+            )}
+            {refreshNotes.length > 0 && !stale && (
+              <p className="refresh-hint">
+                Last run: {refreshNotes[0]}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="stats">
+          <div className="stat">
+            <label>Listings shown</label>
+            <strong>{stats.count}</strong>
+          </div>
+          <div className="stat">
+            <label>Median ask (USD)</label>
+            <strong>{stats.median ? formatMoney(stats.median) : "—"}</strong>
+          </div>
+          <div className="stat">
+            <label>Cheapest ask</label>
+            <strong>{stats.cheapest ? formatMoney(stats.cheapest) : "—"}</strong>
+          </div>
+          <div className="stat">
+            <label>Markets</label>
+            <strong>{stats.markets}</strong>
+          </div>
+        </div>
+      </header>
+
+      <RentalDesk
+        seedPurchasePrice={stats.cheapest || stats.median || undefined}
+      />
+
+      <div className="layout">
+        <aside className="panel filters">
+          <h2>Filters</h2>
+
+          <div className="field">
+            <span>Market</span>
+            <div className="chips">
+              {allMarkets.map((m) => (
+                <button
+                  key={m}
+                  type="button"
+                  className={`chip ${marketFilter.includes(m) ? "active" : ""}`}
+                  onClick={() => toggleValue(m, marketFilter, setMarketFilter)}
+                >
+                  {m}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="field">
+            <span>Model year</span>
+            <div className="chips">
+              {allYears.map((y) => (
+                <button
+                  key={y}
+                  type="button"
+                  className={`chip ${yearFilter.includes(y) ? "active" : ""}`}
+                  onClick={() => toggleValue(y, yearFilter, setYearFilter)}
+                >
+                  {y}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="field">
+            <span>Trim</span>
+            <div className="chips">
+ 
