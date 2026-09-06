@@ -1,0 +1,32 @@
+     curated asks · default focus 2022–2023
+            </p>
+            <div className="toolbar-actions">
+              <label className="toggle">
+                <input
+                  type="checkbox"
+                  checked={showImport}
+                  onChange={(e) => setShowImport(e.target.checked)}
+                />
+                Import math panel
+              </label>
+              {selected.length > 0 && (
+                <button
+                  type="button"
+                  className="btn ghost"
+                  onClick={() => setSelected([])}
+                >
+                  Clear compare ({selected.length})
+                </button>
+              )}
+            </div>
+          </div>
+
+          {showImport && (
+            <section className="panel import-box">
+              <h3>Would importing beat a US car?</h3>
+              <p>
+                Rough model for US buyers: ask + shipping (~$5.5k) + duty (UK
+                ~10%, others ~27.5%) + compliance (~$15k) + ~7% state tax. Not
+                legal advice — confirm with a customs broker.
+              </p>
+        
