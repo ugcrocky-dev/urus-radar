@@ -27,6 +27,9 @@ Open **Make money renting it** on the desk to model:
 
 | Input | Typical range |
 | --- | --- |
+| Purchase price + down payment % | e.g. 20% down on a ~$220k ask |
+| Loan term + APR | Used specialty finance often 36–72 mo, ~7–12%+ APR |
+| **Finance / monthly loan payment** | Auto-calculated from price, down %, term, APR |
 | Daily rate | $600–$2,200 depending on city / desk vs Turo |
 | Rented days / month | Start with 6–10 to stay realistic |
 | Platform / host fee | ~10–25% |
@@ -35,7 +38,7 @@ Open **Make money renting it** on the desk to model:
 | Maint + detail reserves | Budget per rented day |
 | Storage / registration | Monthly fixed cost |
 
-The calculator shows gross, fees, net/month, annual net, break-even days, and payback. Illustrative only — confirm insurance, licensing, taxes, and platform terms before buying to rent.
+The calculator shows gross, **loan payment**, fees, cash flow after the note, annual cash flow, payback on down payment, and break-even rented days (including the monthly finance payment). Set down payment to 100% or term to 0 for an all-cash buy. Illustrative only — confirm lender terms (rental use may be restricted), insurance, licensing, taxes, and platform rules before buying to rent.
 
 ## Notes
 
