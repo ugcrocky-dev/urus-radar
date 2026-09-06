@@ -1,0 +1,32 @@
+name: Daily Urus Radar refresh
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Refresh listings
+        run: npm run refresh
+      - name: Commit updated data
+        run: |
+          if git diff --quiet -- public/data/listings.json; then
+            echo "No listing changes"
+            exit 0
+          fi
+          git config user.name "urus-radar-bot"
+          git config user.email "urus-radar-bot@users.noreply.github.com"
+          git add public/data/listings.json
+          git commit -m "chore: daily Urus listings refresh $(date -u +%Y-%m-%d)"
+          git push

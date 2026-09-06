@@ -1,12 +1,13 @@
 # Urus Radar
 
-Interactive market desk for used Lamborghini Urus listings (focus: 3–4 year old / 2022–2023), comparing US, UK, Germany, and Dubai asks with a rough US import landed-cost estimate — plus a **rental income calculator** (insurance, platform fees, maintenance, break-even days).
+Interactive market desk for used Lamborghini Urus listings (focus: 3–4 year old / 2022–2023), comparing US, UK, Germany, and Dubai asks with import landed-cost estimates — plus a **rental income calculator** (insurance, platform fees, maintenance, break-even).
 
-## Live dashboard
+## Links
 
-After deploy, open the Vercel URL from the repo README / deployment.
+- **Repo:** https://github.com/ugcrocky-dev/urus-radar
+- **Dashboard:** deploy with Vercel (URL in deployment) or run locally below
 
-Local:
+## Run locally
 
 ```bash
 npm install
@@ -16,20 +17,12 @@ npm run dev
 ## Daily refresh
 
 ```bash
-npm run refresh          # update listings JSON now
-npm run refresh:daemon   # refresh when data is >20h old
+npm run refresh
+npm run refresh:daemon
 ```
 
-GitHub Action: `.github/workflows/daily-refresh.yml` runs daily at 06:00 UTC.
+GitHub Action runs daily at 06:00 UTC and commits `public/data/listings.json`.
 
 ## Make money renting
 
-Use the on-page **Make money renting it** desk to model:
-- daily rate × rented days/month
-- platform/host fees
-- commercial/host insurance
-- maintenance + detailing reserves
-- storage/registration
-- break-even occupancy and payback
-
-Illustrative only — verify insurance, licensing, and platform terms before buying to rent.
+Use **Make money renting it** on the dashboard to model daily rate × rented days, host insurance, platform fees, detailing, storage, break-even occupancy, and payback. Typical peer-to-peer Urus day rates often land ~$600–$1,200; exotic desks higher. Security deposits ($3k–$10k) are holds, not income. Illustrative only — confirm insurance and local rules before buying to rent.
