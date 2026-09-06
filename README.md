@@ -1,6 +1,6 @@
 # Urus Radar
 
-Interactive market desk for used Lamborghini Urus listings (focus: 3–4 year old / 2022–2023), comparing US, UK, Germany, and Dubai asks with a rough US import landed-cost estimate.
+Interactive market desk for used Lamborghini Urus listings (focus: 3–4 year-old / 2022–2023 cars) across the US, UK, Germany, and Dubai, with a rough US import landed-cost estimate.
 
 ## Run
 
@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Open the local URL Vite prints (usually `http://localhost:5173`).
+Open the local URL Vite prints (usually http://localhost:5173).
 
 ## Notes
 
