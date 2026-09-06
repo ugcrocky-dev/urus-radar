@@ -1,0 +1,28 @@
+ale ? "stale" : ""}`}>
+              <i /> Daily desk · {formatRefreshLabel(lastRefreshed)}
+              {stale ? " · needs refresh" : ""}
+            </p>
+            <h1 className="brand">
+              <span>Urus Radar</span>
+            </h1>
+            <p className="tagline">
+              One desk for 3–4 year old Lamborghini Urus asks across the US, UK,
+              Germany, and Dubai — plus a rough US landed-cost check so “cheap
+              abroad” doesn’t fool you. Data refreshes every day.
+            </p>
+          </div>
+          <div className="refresh-panel">
+            <button
+              type="button"
+              className="btn primary"
+              onClick={() => void loadListings()}
+              disabled={isReloading}
+            >
+              {isReloading ? "Checking…" : "Check for updates"}
+            </button>
+            <p className="refresh-hint">
+              Auto-refreshes daily via <code>npm run refresh</code> / GitHub
+              Action. This button reloads today’s JSON.
+            </p>
+            {loadState === "error" && (
+              <p className="
