@@ -2,6 +2,7 @@ name: Daily Urus Radar refresh
 
 on:
   schedule:
+    # Every day at 06:00 UTC
     - cron: "0 6 * * *"
   workflow_dispatch:
 
@@ -13,12 +14,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: npm
+
       - name: Refresh listings
         run: npm run refresh
+
       - name: Commit updated data
         run: |
           if git diff --quiet -- public/data/listings.json; then
