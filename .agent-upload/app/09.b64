@@ -1,0 +1,34 @@
+   <label className="toggle">
+            <input
+              type="checkbox"
+              checked={cpoOnly}
+              onChange={(e) => setCpoOnly(e.target.checked)}
+            />
+            CPO / Selezione only
+          </label>
+
+          <div className="field">
+            <span>Sort</span>
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value as SortKey)}
+            >
+              <option value="deal">Best deal signal</option>
+              <option value="priceAsc">Price ↑</option>
+              <option value="priceDesc">Price ↓</option>
+              <option value="milesAsc">Miles ↑</option>
+              <option value="yearDesc">Year ↓</option>
+            </select>
+          </div>
+
+          <p className="hint">
+            Tip: pick up to 3 cars with “Compare” to stack local ask vs estimated
+            US landed cost.
+          </p>
+        </aside>
+
+        <main className="main">
+          <div className="panel toolbar">
+            <p>
+              Showing <strong>{filtered.length}</strong> of {listings.length}{" "}
+         
