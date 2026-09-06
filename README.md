@@ -5,7 +5,7 @@ Interactive market desk for used Lamborghini Urus listings (focus: 3–4 year ol
 ## Live dashboard
 
 - **GitHub:** https://github.com/ugcrocky-dev/urus-radar
-- **Dashboard:** https://urus-radar-veen113-gmailcoms-projects.vercel.app
+- **Dashboard:** https://urus-radar.vercel.app
 
 ```bash
 npm install
