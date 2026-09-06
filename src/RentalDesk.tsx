@@ -1,9 +1,12 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { formatMoney } from "./data/listings";
 
 /** Rough market ranges for planning — not a guarantee of earnings. */
 const DEFAULTS = {
   purchasePrice: 220000,
+  downPaymentPct: 20,
+  loanTermMonths: 60,
+  aprPct: 8.99, // used-exotic / non-prime ballpark — shop your quote
   dailyRate: 950,
   rentedDaysPerMonth: 8,
   platformFeePct: 15, // Turo-like host fee ballpark
@@ -16,10 +19,22 @@ const DEFAULTS = {
   depositHold: 5000, // renter hold, not your income
 };
 
+/** Standard amortizing monthly payment. Returns 0 for cash / invalid loans. */
+function monthlyLoanPayment(principal: number, aprPct: number, termMonths: number) {
+  if (principal <= 0 || termMonths <= 0) return 0;
+  if (aprPct <= 0) return principal / termMonths;
+  const r = aprPct / 100 / 12;
+  const factor = Math.pow(1 + r, termMonths);
+  return (principal * r * factor) / (factor - 1);
+}
+
 export function RentalDesk({ seedPurchasePrice }: { seedPurchasePrice?: number }) {
   const [purchasePrice, setPurchasePrice] = useState(
     seedPurchasePrice && seedPurchasePrice > 0 ? seedPurchasePrice : DEFAULTS.purchasePrice,
   );
+  const [downPaymentPct, setDownPaymentPct] = useState(DEFAULTS.downPaymentPct);
+  const [loanTermMonths, setLoanTermMonths] = useState(DEFAULTS.loanTermMonths);
+  const [aprPct, setAprPct] = useState(DEFAULTS.aprPct);
   const [dailyRate, setDailyRate] = useState(DEFAULTS.dailyRate);
   const [daysPerMonth, setDaysPerMonth] = useState(DEFAULTS.rentedDaysPerMonth);
   const [platformFeePct, setPlatformFeePct] = useState(DEFAULTS.platformFeePct);
@@ -34,49 +49,66 @@ export function RentalDesk({ seedPurchasePrice }: { seedPurchasePrice?: number }
     DEFAULTS.cleaningPerRental,
   );
 
+  useEffect(() => {
+    if (seedPurchasePrice && seedPurchasePrice > 0) {
+      setPurchasePrice(seedPurchasePrice);
+    }
+  }, [seedPurchasePrice]);
+
   const math = useMemo(() => {
+    const clampedDown = Math.min(100, Math.max(0, downPaymentPct));
+    const downPayment = purchasePrice * (clampedDown / 100);
+    const loanAmount = Math.max(0, purchasePrice - downPayment);
+    const financePayment = monthlyLoanPayment(loanAmount, aprPct, loanTermMonths);
+
     const gross = dailyRate * daysPerMonth;
     const platformFee = gross * (platformFeePct / 100);
     const maintenance = maintPerDay * daysPerMonth;
-    const cleaning = cleaningPerRental * daysPerMonth; // assume 1 rental-day ≈ 1 trip for simple model
+    const cleaning = cleaningPerRental * daysPerMonth; // assume 1 rental-day ≈ 1 trip
     const mileageReserve =
       daysPerMonth * DEFAULTS.milesPerRentalDay * DEFAULTS.excessWearReservePerMile;
-    const fixedMonthly = insuranceMonthly + storageMonthly;
+    const fixedOps = insuranceMonthly + storageMonthly;
+    const fixedMonthly = fixedOps + financePayment;
     const variable = platformFee + maintenance + cleaning + mileageReserve;
     const totalCosts = fixedMonthly + variable;
     const net = gross - totalCosts;
     const annualNet = net * 12;
-    const paybackMonths = net > 0 ? purchasePrice / net : null;
+    const cashOnCashMonths = net > 0 && downPayment > 0 ? downPayment / net : null;
+    const paybackOnPurchase = net > 0 ? purchasePrice / net : null;
     const occupancy = (daysPerMonth / 30) * 100;
+    const contributionPerDay =
+      dailyRate -
+      maintPerDay -
+      cleaningPerRental -
+      dailyRate * (platformFeePct / 100) -
+      DEFAULTS.milesPerRentalDay * DEFAULTS.excessWearReservePerMile;
     const breakEvenDays =
-      dailyRate - maintPerDay - cleaningPerRental - dailyRate * (platformFeePct / 100) >
-      0
-        ? Math.ceil(
-            fixedMonthly /
-              (dailyRate -
-                maintPerDay -
-                cleaningPerRental -
-                dailyRate * (platformFeePct / 100) -
-                DEFAULTS.milesPerRentalDay * DEFAULTS.excessWearReservePerMile),
-          )
-        : null;
+      contributionPerDay > 0 ? Math.ceil(fixedMonthly / contributionPerDay) : null;
 
     return {
+      downPayment,
+      loanAmount,
+      financePayment,
       gross,
       platformFee,
       maintenance,
       cleaning,
       mileageReserve,
+      fixedOps,
       fixedMonthly,
       totalCosts,
       net,
       annualNet,
-      paybackMonths,
+      cashOnCashMonths,
+      paybackOnPurchase,
       occupancy,
       breakEvenDays,
     };
   }, [
     purchasePrice,
+    downPaymentPct,
+    loanTermMonths,
+    aprPct,
     dailyRate,
     daysPerMonth,
     platformFeePct,
@@ -92,13 +124,13 @@ export function RentalDesk({ seedPurchasePrice }: { seedPurchasePrice?: number }
         <div>
           <h2>Make money renting it</h2>
           <p>
-            If you buy a used Urus, short rentals (Turo / exotic desks / weekend
-            packages) can offset ownership. Model a few rented days/month —
-            insurance and fees eat a big chunk of the sticker rate.
+            If you finance a used Urus, short rentals (Turo / exotic desks /
+            weekend packages) have to clear the monthly loan payment plus
+            insurance and fees. Model a few rented days/month against the note.
           </p>
         </div>
         <div className="money-pill">
-          Est. net / month
+          Est. cash flow / month
           <strong className={math.net >= 0 ? "up" : "down"}>
             {formatMoney(math.net)}
           </strong>
@@ -115,6 +147,49 @@ export function RentalDesk({ seedPurchasePrice }: { seedPurchasePrice?: number }
             value={purchasePrice}
             onChange={(e) => setPurchasePrice(Number(e.target.value) || 0)}
           />
+        </label>
+        <label className="money-field">
+          <span>Down payment %</span>
+          <input
+            type="number"
+            min={0}
+            max={100}
+            step={1}
+            value={downPaymentPct}
+            onChange={(e) => setDownPaymentPct(Number(e.target.value) || 0)}
+          />
+          <small>
+            {formatMoney(math.downPayment)} down · {formatMoney(math.loanAmount)} financed
+          </small>
+        </label>
+        <label className="money-field">
+          <span>Loan term (months)</span>
+          <input
+            type="number"
+            min={0}
+            max={84}
+            step={12}
+            value={loanTermMonths}
+            onChange={(e) => setLoanTermMonths(Number(e.target.value) || 0)}
+          />
+          <small>Common used terms: 36–72 months · set 0 for cash</small>
+        </label>
+        <label className="money-field">
+          <span>APR %</span>
+          <input
+            type="number"
+            min={0}
+            max={30}
+            step={0.1}
+            value={aprPct}
+            onChange={(e) => setAprPct(Number(e.target.value) || 0)}
+          />
+          <small>Used exotic / specialty finance often ~7–12%+ — get a quote</small>
+        </label>
+        <label className="money-field">
+          <span>Finance payment (monthly)</span>
+          <input type="number" readOnly value={Math.round(math.financePayment)} />
+          <small>Calculated from price, down %, term, and APR</small>
         </label>
         <label className="money-field">
           <span>Your daily rate (USD)</span>
@@ -136,7 +211,9 @@ export function RentalDesk({ seedPurchasePrice }: { seedPurchasePrice?: number }
             value={daysPerMonth}
             onChange={(e) => setDaysPerMonth(Number(e.target.value))}
           />
-          <strong>{daysPerMonth} days · {math.occupancy.toFixed(0)}% occupancy</strong>
+          <strong>
+            {daysPerMonth} days · {math.occupancy.toFixed(0)}% occupancy
+          </strong>
         </label>
         <label className="money-field">
           <span>Platform / host fee %</span>
@@ -200,12 +277,16 @@ export function RentalDesk({ seedPurchasePrice }: { seedPurchasePrice?: number }
           <strong>{formatMoney(math.gross)}</strong>
         </div>
         <div>
+          <label>Finance / loan payment</label>
+          <strong>−{formatMoney(math.financePayment)}</strong>
+        </div>
+        <div>
           <label>Platform fees</label>
           <strong>−{formatMoney(math.platformFee)}</strong>
         </div>
         <div>
-          <label>Insurance + storage (fixed)</label>
-          <strong>−{formatMoney(math.fixedMonthly)}</strong>
+          <label>Insurance + storage</label>
+          <strong>−{formatMoney(math.fixedOps)}</strong>
         </div>
         <div>
           <label>Maint + detail + mile reserve</label>
@@ -214,36 +295,51 @@ export function RentalDesk({ seedPurchasePrice }: { seedPurchasePrice?: number }
           </strong>
         </div>
         <div className="total">
-          <label>Net / month</label>
+          <label>Cash flow / month (after loan)</label>
           <strong className={math.net >= 0 ? "up" : "down"}>
             {formatMoney(math.net)}
           </strong>
         </div>
         <div>
-          <label>Net / year (simple ×12)</label>
+          <label>Cash flow / year (simple ×12)</label>
           <strong>{formatMoney(math.annualNet)}</strong>
         </div>
         <div>
-          <label>Payback on purchase</label>
+          <label>Payback on down payment</label>
           <strong>
-            {math.paybackMonths
-              ? `${math.paybackMonths.toFixed(1)} months`
-              : "— (not profitable)"}
+            {math.cashOnCashMonths
+              ? `${math.cashOnCashMonths.toFixed(1)} months`
+              : "— (not covering costs)"}
           </strong>
         </div>
         <div>
           <label>Break-even rented days / mo</label>
           <strong>
-            {math.breakEvenDays != null && Number.isFinite(math.breakEvenDays) && math.breakEvenDays < 31
+            {math.breakEvenDays != null &&
+            Number.isFinite(math.breakEvenDays) &&
+            math.breakEvenDays < 31
               ? `~${math.breakEvenDays} days`
-              : "Check costs"}
+              : "Check costs / loan"}
           </strong>
         </div>
       </div>
 
       <div className="money-notes">
-        <h3>Fees & insurance to plan for</h3>
+        <h3>Finance, fees & insurance to plan for</h3>
         <ul>
+          <li>
+            <strong>Monthly finance payment:</strong> this model uses a standard
+            amortizing note (
+            {formatMoney(math.loanAmount)} at {aprPct}% APR for {loanTermMonths || 0}{" "}
+            months → {formatMoney(math.financePayment)}/mo). Lenders may require
+            higher down payments, shorter terms, or decline rental use — confirm
+            before you buy.
+          </li>
+          <li>
+            <strong>Cash vs financed:</strong> set down payment to 100% (or term to
+            0) for an all-cash buy. Financed deals need more rented days to break
+            even because the note is a fixed monthly burn.
+          </li>
           <li>
             <strong>Renter security deposit / hold:</strong> typically{" "}
             {formatMoney(DEFAULTS.depositHold)}–$10,000 on their card — not your
@@ -273,13 +369,15 @@ export function RentalDesk({ seedPurchasePrice }: { seedPurchasePrice?: number }
           </li>
           <li>
             <strong>Depreciation & downtime:</strong> one claim, track day, or
-            slow month can wipe several “good” rental weeks — keep reserves.
+            slow month can wipe several “good” rental weeks — keep reserves
+            beyond the loan payment.
           </li>
         </ul>
         <p className="disclaimer">
-          Illustrative only. Rates and insurance vary by city, credit, driving
-          record, and vehicle year. Verify with a broker, CPA, and the platform’s
-          current host terms before buying to rent.
+          Illustrative only. Loan rates, insurance, and rental demand vary by
+          credit, city, driving record, and vehicle year. Verify with a lender,
+          broker, CPA, and the platform’s current host terms before buying to
+          rent.
         </p>
       </div>
     </section>
