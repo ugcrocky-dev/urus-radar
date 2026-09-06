@@ -1,0 +1,25 @@
+.filter(
+                      (x) => x.market === "US" && yearFilter.includes(x.year),
+                    );
+                    const usFloor = usCandidates.length
+                      ? Math.min(...usCandidates.map((x) => x.priceUsd))
+                      : l.priceUsd;
+                    const delta = landed == null ? 0 : landed - usFloor;
+                    return (
+                      <tr key={l.id}>
+                        <td>
+                          {l.year} {l.trim}
+                          <br />
+                          <small>
+                            {l.city} · {milesEquivalent(l).toLocaleString()} mi
+                          </small>
+                        </td>
+                        <td>
+                          {formatMoney(l.priceLocal, l.currency)}
+                          <br />
+                          <small>{formatMoney(l.priceUsd)} USD</small>
+                        </td>
+                        <td>{landed ? formatMoney(landed) : "—"}</td>
+                        <td>
+                          {l.market === "US" ? (
+                            <span className=
