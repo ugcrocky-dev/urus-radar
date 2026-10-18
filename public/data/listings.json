@@ -1,5 +1,5 @@
 {
-  "lastRefreshed": "2026-10-17T10:09:50.928Z",
+  "lastRefreshed": "2026-10-18T10:24:57.045Z",
   "refreshCadence": "daily",
   "focusYears": [
     2022,
@@ -10,8 +10,8 @@
       "id": "us-nyc-17176",
       "year": 2022,
       "trim": "Standard",
-      "priceUsd": 209488,
-      "priceLocal": 209488,
+      "priceUsd": 214725,
+      "priceLocal": 214725,
       "currency": "USD",
       "mileage": 6652,
       "mileageUnit": "mi",
@@ -31,8 +31,8 @@
       "id": "us-nyc-20884",
       "year": 2022,
       "trim": "Standard",
-      "priceUsd": 209487,
-      "priceLocal": 209487,
+      "priceUsd": 214724,
+      "priceLocal": 214724,
       "currency": "USD",
       "mileage": 18549,
       "mileageUnit": "mi",
@@ -52,8 +52,8 @@
       "id": "us-nj-21604",
       "year": 2022,
       "trim": "Standard",
-      "priceUsd": 209487,
-      "priceLocal": 209487,
+      "priceUsd": 214724,
+      "priceLocal": 214724,
       "currency": "USD",
       "mileage": 17021,
       "mileageUnit": "mi",
@@ -73,8 +73,8 @@
       "id": "us-nj-20221",
       "year": 2022,
       "trim": "Standard",
-      "priceUsd": 209488,
-      "priceLocal": 209488,
+      "priceUsd": 214725,
+      "priceLocal": 214725,
       "currency": "USD",
       "mileage": 37398,
       "mileageUnit": "mi",
@@ -88,14 +88,14 @@
       "source": "CarGurus / TrueCar",
       "sourceUrl": "https://www.cars.com/shopping/results/?stock_type=used&makes[]=lamborghini&models[]=lamborghini-urus&year_min=2022&year_max=2022&list_price_min=180346&list_price_max=220423&maximum_distance=all&zip=10001",
       "notes": "Higher miles = stronger negotiation leverage; PPI brakes/tires",
-      "deal": "Fair"
+      "deal": "Great"
     },
     {
       "id": "us-hou-17156",
       "year": 2022,
       "trim": "Standard",
-      "priceUsd": 209488,
-      "priceLocal": 209488,
+      "priceUsd": 214725,
+      "priceLocal": 214725,
       "currency": "USD",
       "mileage": 16856,
       "mileageUnit": "mi",
@@ -115,8 +115,8 @@
       "id": "us-dal-16984",
       "year": 2022,
       "trim": "Standard",
-      "priceUsd": 209487,
-      "priceLocal": 209487,
+      "priceUsd": 214724,
+      "priceLocal": 214724,
       "currency": "USD",
       "mileage": 23584,
       "mileageUnit": "mi",
@@ -136,8 +136,8 @@
       "id": "us-irv-25479",
       "year": 2023,
       "trim": "Performante",
-      "priceUsd": 209491,
-      "priceLocal": 209491,
+      "priceUsd": 214728,
+      "priceLocal": 214728,
       "currency": "USD",
       "mileage": 11739,
       "mileageUnit": "mi",
@@ -157,8 +157,8 @@
       "id": "us-avg-23s",
       "year": 2023,
       "trim": "S",
-      "priceUsd": 209488,
-      "priceLocal": 209488,
+      "priceUsd": 214725,
+      "priceLocal": 214725,
       "currency": "USD",
       "mileage": 9800,
       "mileageUnit": "mi",
@@ -193,7 +193,7 @@
       "source": "PistonHeads",
       "sourceUrl": "https://www.pistonheads.com/buy/listing/20975775",
       "notes": "RHD; warranty remaining; wrap may hide paint—inspect",
-      "deal": "High"
+      "deal": "Fair"
     },
     {
       "id": "uk-med-2022",
@@ -214,7 +214,7 @@
       "source": "AutoUncle UK",
       "sourceUrl": "https://www.autotrader.co.uk/car-search?postcode=W1B3AG&make=Lamborghini&model=Urus&year-from=2022&year-to=2022&price-from=167778&price-to=205062&advertising-location=at_cars",
       "notes": "UK median ask for 2022 (~£183k)",
-      "deal": "High"
+      "deal": "Fair"
     },
     {
       "id": "uk-med-2023",
@@ -395,9 +395,9 @@
   ],
   "refreshNotes": [
     "FX USD→ GBP 0.74989, EUR 0.88865, AED 3.6725 (peg)",
-    "truecar-2022: n=15, median local=175000, ≈$175000",
-    "truecar-2023: n=15, median local=175000, ≈$175000",
-    "cargurus-urus: n=839, median local=242749, ≈$242749",
+    "truecar-2022: n=25, median local=229495, ≈$229495",
+    "truecar-2023: n=25, median local=233995, ≈$233995",
+    "cargurus-urus: n=1009, median local=240924, ≈$240924",
     "autouncle-uk: unreachable (403)",
     "dubicars: unreachable (403)"
   ]
