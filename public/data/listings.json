@@ -1,5 +1,5 @@
 {
-  "lastRefreshed": "2026-11-05T13:59:31.609Z",
+  "lastRefreshed": "2026-11-06T13:44:57.069Z",
   "refreshCadence": "daily",
   "focusYears": [
     2022,
@@ -179,7 +179,7 @@
       "year": 2023,
       "trim": "S",
       "priceUsd": 248000,
-      "priceLocal": 183706,
+      "priceLocal": 184262,
       "currency": "GBP",
       "mileage": 29000,
       "mileageUnit": "mi",
@@ -200,7 +200,7 @@
       "year": 2022,
       "trim": "Standard",
       "priceUsd": 239000,
-      "priceLocal": 177039,
+      "priceLocal": 177575,
       "currency": "GBP",
       "mileage": 28200,
       "mileageUnit": "mi",
@@ -221,7 +221,7 @@
       "year": 2023,
       "trim": "S",
       "priceUsd": 301000,
-      "priceLocal": 222966,
+      "priceLocal": 223640,
       "currency": "GBP",
       "mileage": 9800,
       "mileageUnit": "mi",
@@ -242,7 +242,7 @@
       "year": 2023,
       "trim": "S",
       "priceUsd": 308000,
-      "priceLocal": 273365,
+      "priceLocal": 274413,
       "currency": "EUR",
       "mileage": 19855,
       "mileageUnit": "km",
@@ -394,10 +394,10 @@
     "dubicars"
   ],
   "refreshNotes": [
-    "FX USD→ GBP 0.74075, EUR 0.88755, AED 3.6725 (peg)",
-    "truecar-2022: n=6, median local=159047, ≈$159047",
-    "truecar-2023: n=6, median local=159047, ≈$159047",
-    "cargurus-urus: n=920, median local=244399, ≈$244399",
+    "FX USD→ GBP 0.74299, EUR 0.89095, AED 3.6725 (peg)",
+    "truecar-2022: n=10, median local=175000, ≈$175000",
+    "truecar-2023: n=5, median local=175000, ≈$175000",
+    "cargurus-urus: n=916, median local=244582, ≈$244582",
     "autouncle-uk: unreachable (403)",
     "dubicars: unreachable (403)"
   ]
